@@ -7,7 +7,8 @@ const routes: RouteRecordRaw[] = [
     children: [
       { path: '', component: () => import('pages/Index.vue') },
       { path: 'stream', component: () => import('pages/StreamView.vue') },
-      { path: 'view', component: () => import('pages/ViewerView.vue') },
+      { name: 'view', path: 'view/:id', component: () => import('pages/ViewerView.vue') },
+      { path: 'qr-code', component: () => import('pages/QrCodeReaderView.vue') },
     ],
   },
 

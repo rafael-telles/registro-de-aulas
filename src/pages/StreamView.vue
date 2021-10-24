@@ -2,12 +2,14 @@
 import { ref, onMounted } from 'vue'
 import Peer from 'peerjs'
 import PictureInPicture from 'src/components/PictureInPicture.vue'
+import VueQrcode from 'vue-qrcode'
 
+const id = ref("TELLES-123")
 const currentVideoTrack = ref(null)
 const videoRef = ref()
-const peer = new Peer("TELLES-123")
+const peer = new Peer(id.value)
 
-async function start() {
+function start() {
   const remoteVideo = videoRef.value
   var tempStream = new MediaStream();
   setTimeout(function () {
@@ -16,7 +18,7 @@ async function start() {
   }, 500);
 
   console.log(peer)
-  peer.on("open", async (id) => {
+  peer.on("open", (id) => {
     console.log({ id })
   });
   peer.on("connection", function (conn) {
@@ -64,7 +66,7 @@ async function enableScreen() {
 }
 
 onMounted(() => {
-  start()
+  void start()
 })
 
 </script>
@@ -77,4 +79,8 @@ onMounted(() => {
   <button @click="enableScreen">Screen</button>
   <button @click="toggleAudio">Toggle audio</button>
   <PictureInPicture />
+
+  <br />
+
+  <vue-qrcode :value="id" />
 </template>
