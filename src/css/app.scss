@@ -1,1 +1,18 @@
-// app global css in SCSS form
+:root {
+  --q-relative-font-size: 100%;
+  --q-font-weight: normal;
+  --q-font-family: Roboto;
+}
+
+html {
+  background-color: white;
+}
+html.invert-colors {
+  filter: invert(100%);
+}
+
+body {
+  font-family: var(--q-font-family);
+  font-size: var(--q-relative-font-size);
+  font-weight: var(--q-font-weight);
+}

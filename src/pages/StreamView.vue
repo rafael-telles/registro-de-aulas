@@ -1,57 +1,57 @@
 <script setup>
-import { ref, onMounted } from 'vue'
-import Peer from 'peerjs'
-import PictureInPicture from 'src/components/PictureInPicture.vue'
-import VueQrcode from 'vue-qrcode'
+import { ref, onMounted } from 'vue';
+import Peer from 'peerjs';
+import PictureInPicture from 'src/components/PictureInPicture.vue';
+import VueQrcode from 'vue-qrcode';
 
-const id = ref("TELLES-123")
-const currentVideoTrack = ref(null)
-const videoRef = ref()
-const peer = new Peer(id.value)
+const id = ref('TELLES-123');
+const currentVideoTrack = ref(null);
+const videoRef = ref();
+const peer = new Peer(id.value);
 
 function start() {
-  const remoteVideo = videoRef.value
+  const remoteVideo = videoRef.value;
   var tempStream = new MediaStream();
   setTimeout(function () {
     remoteVideo.srcObject = tempStream.remoteStream;
     remoteVideo.play();
   }, 500);
 
-  console.log(peer)
-  peer.on("open", (id) => {
-    console.log({ id })
+  console.log(peer);
+  peer.on('open', (id) => {
+    console.log({ id });
   });
-  peer.on("connection", function (conn) {
-    const remoteVideo = videoRef.value
+  peer.on('connection', function (conn) {
+    const remoteVideo = videoRef.value;
     const newCall = peer.call(conn.peer, remoteVideo.srcObject);
-    console.log({ newCall })
+    console.log({ newCall });
     // setCalls([...calls, newCall]);
   });
 }
 
 function toggleAudio() {
-  const stream = videoRef.value.srcObject
+  const stream = videoRef.value.srcObject;
   const audioTrack = stream.getAudioTracks()[0];
-  audioTrack.enabled = !audioTrack.enabled
+  audioTrack.enabled = !audioTrack.enabled;
 }
 
 function disableCurrentVideo() {
   if (currentVideoTrack.value) {
-    currentVideoTrack.value.stop()
-    currentVideoTrack.value = null
+    currentVideoTrack.value.stop();
+    currentVideoTrack.value = null;
   }
 }
 
 async function enableCamera() {
   const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
 
-  disableCurrentVideo()
+  disableCurrentVideo();
 
-  const videoTrack = stream.getVideoTracks()[0]
-  stream.replaceVideoTrack(videoTrack)
-  stream.replaceAudioTrack(stream.getAudioTracks()[0])
+  const videoTrack = stream.getVideoTracks()[0];
+  stream.replaceVideoTrack(videoTrack);
+  stream.replaceAudioTrack(stream.getAudioTracks()[0]);
 
-  currentVideoTrack.value = videoTrack
+  currentVideoTrack.value = videoTrack;
 }
 
 async function enableScreen() {
@@ -59,16 +59,15 @@ async function enableScreen() {
 
   disableCurrentVideo();
 
-  const videoTrack = stream.getVideoTracks()[0]
-  stream.replaceVideoTrack(videoTrack)
+  const videoTrack = stream.getVideoTracks()[0];
+  stream.replaceVideoTrack(videoTrack);
 
-  currentVideoTrack.value = videoTrack
+  currentVideoTrack.value = videoTrack;
 }
 
 onMounted(() => {
-  void start()
-})
-
+  void start();
+});
 </script>
 
 <template>

@@ -1,43 +1,30 @@
 <template>
   <q-layout view="lHh Lpr lFf">
     <q-header elevated>
-      <q-toolbar>
-        <q-btn flat dense round icon="menu" aria-label="Menu" @click="toggleLeftDrawer" />
-
-        <q-toolbar-title>Registro de Aula</q-toolbar-title>
-
-        <!-- <div>Quasar v{{ $q.version }}</div> -->
+      <q-toolbar class="row">
+        <q-btn class="col" flat dense round icon="help" aria-label="Ajuda" @click="goToHelp" />
+        <q-btn class="col" flat dense round icon="settings" aria-label="Configurações" @click="goToSettings" />
+        <q-btn class="col" flat dense round icon="waving_hand" aria-label="Libras" @click="goToSettings" />
       </q-toolbar>
     </q-header>
-
-    <q-drawer v-model="leftDrawerOpen" bordered>
-      <q-list>
-        <q-item-label header>Menu</q-item-label>
-      </q-list>
-    </q-drawer>
 
     <q-page-container>
       <router-view />
     </q-page-container>
+
+    <q-footer> &nbsp; </q-footer>
   </q-layout>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
+import { useRouter } from 'vue-router';
 
-import { defineComponent, ref } from 'vue'
+const router = useRouter();
 
-export default defineComponent({
-  name: 'MainLayout',
-
-  setup() {
-    const leftDrawerOpen = ref(false)
-
-    return {
-      leftDrawerOpen,
-      toggleLeftDrawer() {
-        leftDrawerOpen.value = !leftDrawerOpen.value
-      }
-    }
-  }
-})
+function goToHelp() {
+  //
+}
+async function goToSettings() {
+  await router.push('/settings');
+}
 </script>

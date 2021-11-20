@@ -1,14 +1,14 @@
 <script lang="ts" setup>
-import { ref } from 'vue'
-import Peer from 'peerjs'
-import * as ClassRecord from '../models/ClassRecord'
-import { useRoute } from 'vue-router'
+import { ref } from 'vue';
+import Peer from 'peerjs';
+import * as ClassRecord from '../models/ClassRecord';
+import { useRoute } from 'vue-router';
 
 const route = useRoute();
-const videoRef = ref<HTMLVideoElement>()
+const videoRef = ref<HTMLVideoElement>();
 const peer = new Peer();
 let mediaRecorder: MediaRecorder;
-let chunks: BlobPart[] = []
+let chunks: BlobPart[] = [];
 
 function connect() {
   peer.on('call', function (call) {
@@ -16,7 +16,7 @@ function connect() {
     call.on('stream', function (stream) {
       console.log('got stream', stream);
 
-      videoRef.value!.srcObject = stream
+      videoRef.value!.srcObject = stream;
     });
     call.answer();
   });
@@ -28,7 +28,7 @@ function startRecord() {
   mediaRecorder.ondataavailable = function (e) {
     console.log('Added Data', e.data);
     chunks.push(e.data);
-  }
+  };
   mediaRecorder.onstop = onStop;
   mediaRecorder.start();
 }
@@ -48,37 +48,38 @@ function saveAs(content: Blob, name: string) {
   a.click();
   window.URL.revokeObjectURL(url);
 }
-async function onStop(e) {
+async function onStop() {
   console.log('data available after MediaRecorder.stop() called.');
   const blob = new Blob(chunks, {
-    type: 'video/webm'
+    type: 'video/webm',
   });
 
   const record: ClassRecord.ClassRecord = {
     blob,
     blobType: blob.type,
-    notes: [{
-      kind: 'text',
-      content: 'Hello!'
-    },
-    {
-      kind: 'text',
-      content: 'Goodbye!'
-    }]
-  }
+    notes: [
+      {
+        kind: 'text',
+        content: 'Hello!',
+      },
+      {
+        kind: 'text',
+        content: 'Goodbye!',
+      },
+    ],
+  };
 
   window.record = record;
-  window.deserializeClassRecord = ClassRecord.deserializeClassRecord
-  window.serializeClassRecord = ClassRecord.serializeClassRecord
+  window.deserializeClassRecord = ClassRecord.deserializeClassRecord;
+  window.serializeClassRecord = ClassRecord.serializeClassRecord;
 
-  const recordSerialized = ClassRecord.serializeClassRecord(record)
-  const recordDeserialized = await ClassRecord.deserializeClassRecord(recordSerialized)
+  const recordSerialized = ClassRecord.serializeClassRecord(record);
+  const recordDeserialized = await ClassRecord.deserializeClassRecord(recordSerialized);
 
-  window.recordSerialized = recordSerialized
-  window.recordDeserialized = recordDeserialized
+  window.recordSerialized = recordSerialized;
+  window.recordDeserialized = recordDeserialized;
 
-
-  chunks.splice(0)
+  chunks.splice(0);
 
   // const zip = new JSZip();
   // zip.file("Hello.txt", "Hello World\n");
@@ -86,7 +87,7 @@ async function onStop(e) {
   // const content = await zip.generateAsync({ type: "blob" })
   // saveAs(content, "example.zip");
 }
-                                                                                                                                        </script>
+</script>
 
 <template>
   <video ref="videoRef" autoplay playsinline controls width="600" height="400"></video>
