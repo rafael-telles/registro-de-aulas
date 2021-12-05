@@ -2,6 +2,7 @@ import omit from 'lodash/omit';
 
 export type Note = {
   kind: 'text';
+  title: string;
   content: string;
 };
 
@@ -18,11 +19,11 @@ export function serializeClassRecord(record: ClassRecord): Blob {
 
   const blobLessJSON = omit(record, 'blob');
 
-  const notesJson = JSON.stringify(blobLessJSON);
+  const notesBlob = new Blob([JSON.stringify(blobLessJSON)], { type: 'application/json' });
 
-  headerInt32View[0] = notesJson.length;
+  headerInt32View[0] = notesBlob.size;
 
-  return new Blob([headerBuffer, notesJson, record.blob]);
+  return new Blob([headerBuffer, notesBlob, record.blob]);
 }
 
 export async function deserializeClassRecord(serializedRecord: Blob): Promise<ClassRecord> {
@@ -36,7 +37,6 @@ export async function deserializeClassRecord(serializedRecord: Blob): Promise<Cl
   blobFrom += blobLength;
   blobLength = notesJsonLength;
   const notesJson = await serializedRecord.slice(blobFrom, blobFrom + blobLength).text();
-  console.log(notesJson);
   const notes = JSON.parse(notesJson) as Pick<ClassRecord, Exclude<keyof ClassRecord, 'blob'>>;
 
   blobFrom += blobLength;

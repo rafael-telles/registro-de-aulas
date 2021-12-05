@@ -15,6 +15,8 @@ const routes: RouteRecordRaw[] = [
       { path: 'settings/font-style', component: () => import('pages/settings/FontStyle.vue') },
 
       { path: 'start-offline-recording', component: () => import('pages/StartOfflineRecording.vue') },
+      { path: 'offline-audio-recording', component: () => import('pages/OfflineAudioRecording.vue') },
+      { path: 'open-recording', component: () => import('pages/OpenRecording.vue') },
 
       { path: 'stream', component: () => import('pages/StreamView.vue') },
       { name: 'view', path: 'view/:id', component: () => import('pages/ViewerView.vue') },
