@@ -1,28 +1,34 @@
 import { RouteRecordRaw } from 'vue-router';
 
+const PATH_PATHS = [
+  'Index',
+  'Settings',
+  'Settings/Colors',
+  'Settings/FontSize',
+  'Settings/InvertColors',
+  'Settings/FontWeight',
+  'Settings/FontStyle',
+  'StartOfflineRecording',
+  'OfflineAudioRecording',
+  'OpenRecording',
+  'SharedRecording',
+  'StreamView',
+  'ViewerView',
+  'QrCodeReaderView',
+  'Help'
+] as const;
+
+export type PagePath = typeof PATH_PATHS[number]
+
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      { path: '', component: () => import('pages/Index.vue') },
-
-      { path: 'help', component: () => import('src/pages/help/Index.vue') },
-
-      { path: 'settings', component: () => import('src/pages/settings/Index.vue') },
-      { path: 'settings/colors', component: () => import('pages/settings/Colors.vue') },
-      { path: 'settings/font-size', component: () => import('pages/settings/FontSize.vue') },
-      { path: 'settings/invert-colors', component: () => import('pages/settings/InvertColors.vue') },
-      { path: 'settings/font-weight', component: () => import('pages/settings/FontWeight.vue') },
-      { path: 'settings/font-style', component: () => import('pages/settings/FontStyle.vue') },
-
-      { path: 'start-offline-recording', component: () => import('pages/StartOfflineRecording.vue') },
-      { path: 'offline-audio-recording', component: () => import('pages/OfflineAudioRecording.vue') },
-      { path: 'open-recording', component: () => import('pages/OpenRecording.vue') },
-
-      { path: 'stream', component: () => import('pages/StreamView.vue') },
-      { name: 'view', path: 'view/:id', component: () => import('pages/ViewerView.vue') },
-      { path: 'qr-code', component: () => import('pages/QrCodeReaderView.vue') }
+      { path: '', redirect: 'Index' as PagePath },
+      ...PATH_PATHS.map(pagePath => {
+        return { path: pagePath, component: () => import(`src/pages/${pagePath}.vue`) };
+      })
     ]
   },
 

@@ -19,16 +19,17 @@
 
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
+import { goTo } from 'src/helpers/goTo';
 
 const router = useRouter();
 
 async function goToHome() {
-  await router.push('/');
+  await goTo(router, 'Index');
 }
 async function goToSettings() {
-  await router.push('/settings');
+  await goTo(router, 'Settings');
 }
 async function goToHelp() {
-  await router.push('/help');
+  await goTo(router, 'Help');
 }
 </script>

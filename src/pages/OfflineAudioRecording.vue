@@ -18,12 +18,12 @@ import { getMediaStream } from 'src/helpers/getMediaStream';
 import { saveBlobAs } from 'src/helpers/saveBlobAs';
 
 function useRecordingDuration(getRecording: () => MediaRecording | undefined) {
-  const recordingDuration = ref('0:00');
+  const recordingDuration = ref('--:--');
   const recordingDurationUpdate = ref<NodeJS.Timeout>();
 
   onMounted(() => {
     recordingDurationUpdate.value = setInterval(() => {
-      recordingDuration.value = getRecording()?.duration ?? '-';
+      recordingDuration.value = getRecording()?.duration ?? '--:--';
     }, 100);
   });
   onUnmounted(() => {
