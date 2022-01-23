@@ -1,23 +1,26 @@
 <template>
-  <q-page class="column items-center justify-evenly">
-    <q-btn
-      color="color2"
-      text-color="color1"
-      label="Iniciar Gravação"
-      @click="router.push('/start-offline-recording')"
-    />
-
-    <q-btn color="color2" text-color="color1" label="Gravação Compartilhada" />
-    <q-btn color="color2" text-color="color1" label="Acessar Gravações" />
-    <!-- Bem-vindo!
-    <br />
-    <router-link to="stream">Stream</router-link>
-    <br />
-    <router-link to="qr-code">View</router-link> -->
-  </q-page>
+  <ButtonsOnlyPage :buttons='buttons' />
 </template>
-<script setup lang="ts">
+<script setup lang='ts'>
+import ButtonsOnlyPage, { Button } from 'pages/ButtonsOnlyPage.vue';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
+
+const buttons: Button[] = [{
+  label: 'Iniciar Gravação',
+  async onClick() {
+    await router.push('/start-offline-recording');
+  }
+}, {
+  label: 'Gravação Compartilhada',
+  async onClick() {
+    // TODO
+  }
+}, {
+  label: 'Acessar Gravações',
+  async onClick() {
+    // TODO
+  }
+}];
 </script>

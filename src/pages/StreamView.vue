@@ -3,7 +3,7 @@ import { ref, onMounted } from 'vue';
 import Peer from 'peerjs';
 import PictureInPicture from 'src/components/PictureInPicture.vue';
 import VueQrcode from 'vue-qrcode';
-import { getMediaStream } from 'src/getMediaStream';
+import { getMediaStream } from 'src/helpers/getMediaStream';
 
 const id = ref('TELLES-123');
 const currentVideoTrack = ref(null);

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { getMediaStream } from 'src/getMediaStream';
+import { getMediaStream } from 'src/helpers/getMediaStream';
 import { ref } from 'vue';
 
 const videoRef = ref();

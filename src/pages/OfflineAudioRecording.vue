@@ -1,37 +1,45 @@
 <template>
-  <div class="q-px-lg column items-center justify-evenly items-stretch">
-    <div class="row items-center">
-      <q-btn color="color2" text-color="color1" label="Terminar Gravação" @click="stopRecord" />
-      <span class="offset-1">{{ recordingDuration }}</span>
+  <div class='q-px-lg column items-center justify-evenly items-stretch'>
+    <div class='row items-center'>
+      <q-btn v-if='isRecording' color='color2' text-color='color1' label='Terminar Gravação' @click='stopRecord' />
+      <q-btn v-else color='color2' text-color='color1' label='Iniciar Gravação' @click='startRecord' />
+      <span class='offset-1'>{{ recordingDuration }}</span>
     </div>
-    <Notes v-model="notes" />
+    <Notes v-model='notes' />
   </div>
 </template>
 
-<script lang="ts" setup>
+<script lang='ts' setup>
 import { onMounted, onUnmounted, ref } from 'vue';
 import { MediaRecording } from '../models/MediaRecording';
 import { ClassRecord, deserializeClassRecord, Note, serializeClassRecord } from '../models/ClassRecord';
 import Notes from '../components/Notes.vue';
-import { getMediaStream } from 'src/getMediaStream';
+import { getMediaStream } from 'src/helpers/getMediaStream';
+import { saveBlobAs } from 'src/helpers/saveBlobAs';
+
+function useRecordingDuration(getRecording: () => MediaRecording | undefined) {
+  const recordingDuration = ref('0:00');
+  const recordingDurationUpdate = ref<NodeJS.Timeout>();
+
+  onMounted(() => {
+    recordingDurationUpdate.value = setInterval(() => {
+      recordingDuration.value = getRecording()?.duration ?? '-';
+    }, 100);
+  });
+  onUnmounted(() => {
+    if (recordingDurationUpdate.value) {
+      clearInterval(recordingDurationUpdate.value);
+    }
+  });
+
+  return recordingDuration;
+}
 
 let recording: MediaRecording;
 
+const isRecording = ref(false);
 const notes = ref<Note[]>([]);
-const recordingDuration = ref('0:00');
-const recordingDurationUpdate = ref<NodeJS.Timeout>();
-
-onMounted(async () => {
-  await startRecord();
-  recordingDurationUpdate.value = setInterval(() => {
-    recordingDuration.value = recording.duration;
-  }, 1000);
-});
-onUnmounted(() => {
-  if (recordingDurationUpdate.value) {
-    clearInterval(recordingDurationUpdate.value);
-  }
-});
+const recordingDuration = useRecordingDuration(() => recording);
 
 async function startRecord() {
   const stream = await getMediaStream({ audio: true });
@@ -39,33 +47,22 @@ async function startRecord() {
 
   recording = new MediaRecording(stream);
   recording.start();
+
+  isRecording.value = true;
 }
 
 async function stopRecord() {
-  const blob = await recording.finish();
+  const mediaBlob = await recording.finish();
+  isRecording.value = false;
 
   const classRecord: ClassRecord = {
-    blob,
-    blobType: blob.type,
-    notes: notes.value,
+    blob: mediaBlob,
+    blobType: mediaBlob.type,
+    notes: notes.value
   };
 
-  const blob2 = serializeClassRecord(classRecord);
+  const classRecordBlob = serializeClassRecord(classRecord);
 
-  const x = await deserializeClassRecord(blob2);
-  console.log(x);
-
-  saveAs(blob2, 'recording.notes');
-}
-
-function saveAs(content: Blob, name: string) {
-  const url = URL.createObjectURL(content);
-  const a = document.createElement('a');
-  document.body.appendChild(a);
-  a.style.display = 'none';
-  a.href = url;
-  a.download = name;
-  a.click();
-  window.URL.revokeObjectURL(url);
+  saveBlobAs(classRecordBlob, 'recording.notes');
 }
 </script>
