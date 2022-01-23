@@ -3,6 +3,7 @@ import { ref, onMounted } from 'vue';
 import Peer from 'peerjs';
 import PictureInPicture from 'src/components/PictureInPicture.vue';
 import VueQrcode from 'vue-qrcode';
+import { getMediaStream } from 'src/getMediaStream';
 
 const id = ref('TELLES-123');
 const currentVideoTrack = ref(null);
@@ -43,7 +44,7 @@ function disableCurrentVideo() {
 }
 
 async function enableCamera() {
-  const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+  const stream = await getMediaStream({ video: true, audio: true });
 
   disableCurrentVideo();
 

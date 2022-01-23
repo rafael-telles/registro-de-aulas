@@ -1,19 +1,20 @@
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { getMediaStream } from 'src/getMediaStream';
+import { ref } from 'vue';
 
-const videoRef = ref()
+const videoRef = ref();
 
 async function enablePIP() {
-  const videoEl: HTMLVideoElement = videoRef.value
+  const videoEl: HTMLVideoElement = videoRef.value;
 
-  const cameraStream = await navigator.mediaDevices.getUserMedia({ video: true });
+  const cameraStream = await getMediaStream({ video: true });
+  if (!cameraStream) return;
+
   videoEl.srcObject = cameraStream;
   await videoEl.play();
 
-  const pipWindow: PictureInPictureWindow = await videoEl.requestPictureInPicture();
-  console.log(pipWindow)
+  await videoEl.requestPictureInPicture();
 }
-
 </script>
 
 <template>

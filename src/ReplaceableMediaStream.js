@@ -48,13 +48,9 @@ async function init(debug) {
 
   async function start() {
     debugLog('Requesting local stream');
-    try {
-      const stream = blackSilence(); // await navigator.mediaDevices.getUserMedia({ audio: true, video: true });
-      debugLog('Received local stream');
-      localStream = stream;
-    } catch (e) {
-      alert(`getUserMedia() error: ${e.name}`);
-    }
+    const stream = blackSilence();
+    debugLog('Received local stream');
+    localStream = stream;
   }
 
   async function call() {

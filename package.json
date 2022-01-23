@@ -6,6 +6,7 @@
   "author": "Rafael Telles <rafael@telles.dev>",
   "private": true,
   "scripts": {
+    "dev": "quasar dev",
     "lint": "eslint --ext .js,.ts,.vue ./",
     "test": "echo \"No test specified\" && exit 0"
   },

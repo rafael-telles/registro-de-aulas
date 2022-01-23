@@ -20,11 +20,11 @@ function connect() {
     });
     call.answer();
   });
-  peer.connect(route.params.id);
+  peer.connect(route.params.id as string);
 }
 
 function startRecord() {
-  mediaRecorder = new MediaRecorder(videoRef.value!.srcObject);
+  mediaRecorder = new MediaRecorder(videoRef.value!.srcObject as MediaStream);
   mediaRecorder.ondataavailable = function (e) {
     console.log('Added Data', e.data);
     chunks.push(e.data);
@@ -41,8 +41,7 @@ function saveAs(content: Blob, name: string) {
   const url = URL.createObjectURL(content);
   const a = document.createElement('a');
   document.body.appendChild(a);
-  // @ts-ignore
-  a.style = 'display: none';
+  a.style.display = 'none';
   a.href = url;
   a.download = name;
   a.click();
@@ -61,23 +60,18 @@ async function onStop() {
       {
         kind: 'text',
         content: 'Hello!',
+        title: 'Hello',
       },
       {
         kind: 'text',
         content: 'Goodbye!',
+        title: 'Goodbye',
       },
     ],
   };
 
-  window.record = record;
-  window.deserializeClassRecord = ClassRecord.deserializeClassRecord;
-  window.serializeClassRecord = ClassRecord.serializeClassRecord;
-
   const recordSerialized = ClassRecord.serializeClassRecord(record);
   const recordDeserialized = await ClassRecord.deserializeClassRecord(recordSerialized);
-
-  window.recordSerialized = recordSerialized;
-  window.recordDeserialized = recordDeserialized;
 
   chunks.splice(0);
 

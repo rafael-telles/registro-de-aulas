@@ -34,6 +34,7 @@ function applySettings(settings: Settings) {
   localStorage.setItem('settings', JSON.stringify(settings));
 
   // Apply CSS Variables
+  setCssVar('primary', settings.color2);
   setCssVar('color1', settings.color1);
   setCssVar('color2', settings.color2);
   setCssVar('font-weight', settings.fontWeight);

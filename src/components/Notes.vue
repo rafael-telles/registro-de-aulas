@@ -39,8 +39,8 @@ function saveNote() {
 
 <template>
   <div class="row">
-    <q-select v-model="currentNote" :options="notes" option-label="title" label="Anotações" />
-    <q-btn color="color2" text-color="color1" icon="add" @click="addNewNote" />
+    <q-select class="col" outlined v-model="currentNote" :options="notes" option-label="title" label="Anotações" />
+    <q-btn flat size="sm" color="color2" text-color="color1" icon="add" @click="addNewNote" />
   </div>
 
   <div v-if="currentNote">

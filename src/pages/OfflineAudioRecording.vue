@@ -1,18 +1,19 @@
 <template>
-  <q-page class="column items-center justify-evenly">
-    <div class="row">
+  <div class="q-px-lg column items-center justify-evenly items-stretch">
+    <div class="row items-center">
       <q-btn color="color2" text-color="color1" label="Terminar Gravação" @click="stopRecord" />
-      <p>{{ recordingDuration }}</p>
+      <span class="offset-1">{{ recordingDuration }}</span>
     </div>
     <Notes v-model="notes" />
-  </q-page>
+  </div>
 </template>
 
 <script lang="ts" setup>
 import { onMounted, onUnmounted, ref } from 'vue';
 import { MediaRecording } from '../models/MediaRecording';
-import { ClassRecord, Note, serializeClassRecord, deserializeClassRecord } from '../models/ClassRecord';
+import { ClassRecord, deserializeClassRecord, Note, serializeClassRecord } from '../models/ClassRecord';
 import Notes from '../components/Notes.vue';
+import { getMediaStream } from 'src/getMediaStream';
 
 let recording: MediaRecording;
 
@@ -33,7 +34,9 @@ onUnmounted(() => {
 });
 
 async function startRecord() {
-  const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+  const stream = await getMediaStream({ audio: true });
+  if (!stream) return;
+
   recording = new MediaRecording(stream);
   recording.start();
 }
