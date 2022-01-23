@@ -7,6 +7,8 @@ const routes: RouteRecordRaw[] = [
     children: [
       { path: '', component: () => import('pages/Index.vue') },
 
+      { path: 'help', component: () => import('src/pages/help/Index.vue') },
+
       { path: 'settings', component: () => import('src/pages/settings/Index.vue') },
       { path: 'settings/colors', component: () => import('pages/settings/Colors.vue') },
       { path: 'settings/font-size', component: () => import('pages/settings/FontSize.vue') },
@@ -20,16 +22,16 @@ const routes: RouteRecordRaw[] = [
 
       { path: 'stream', component: () => import('pages/StreamView.vue') },
       { name: 'view', path: 'view/:id', component: () => import('pages/ViewerView.vue') },
-      { path: 'qr-code', component: () => import('pages/QrCodeReaderView.vue') },
-    ],
+      { path: 'qr-code', component: () => import('pages/QrCodeReaderView.vue') }
+    ]
   },
 
   // Always leave this as last one,
   // but you can also remove it
   {
     path: '/:catchAll(.*)*',
-    component: () => import('pages/Error404.vue'),
-  },
+    component: () => import('pages/Error404.vue')
+  }
 ];
 
 export default routes;
