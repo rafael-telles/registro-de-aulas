@@ -1,21 +1,30 @@
 <script lang="ts" setup>
 import { useRouter } from 'vue-router'
+import { goTo } from 'src/helpers/goTo';
 
 const router = useRouter()
 
-function onDecode(decodedString: string) {
-  void router.replace({
-    name: 'view',
-    params: {
-      id: decodedString
-    }
+async function onDecode(decodedString: string) {
+  await goTo(router, 'ViewerView', {
+    id: decodedString
   })
 }
 
 </script>
 
 <template>
-  <qr-stream @decode="onDecode" style="width: 600px">
-    <div style="color: red;" class="frame"></div>
-  </qr-stream>
+  <div class="wrapper">
+    <qr-stream @decode="onDecode">
+      <div style="color: red;" class="frame"></div>
+    </qr-stream>
+  </div>
 </template>
+<style scoped>
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: calc(100vh - 74px);
+}
+</style>

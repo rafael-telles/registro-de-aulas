@@ -3,12 +3,17 @@ import { ref } from 'vue';
 import Peer from 'peerjs';
 import * as ClassRecord from '../models/ClassRecord';
 import { useRoute } from 'vue-router';
+import { saveBlobAs } from 'src/helpers/saveBlobAs';
+import { Note } from '../models/ClassRecord';
+import Notes from '../components/Notes.vue';
 
 const route = useRoute();
 const videoRef = ref<HTMLVideoElement>();
 const peer = new Peer();
 let mediaRecorder: MediaRecorder;
 let chunks: BlobPart[] = [];
+
+const notes = ref<Note[]>([]);
 
 function connect() {
   peer.on('call', function (call) {
@@ -20,7 +25,7 @@ function connect() {
     });
     call.answer();
   });
-  peer.connect(route.params.id as string);
+  peer.connect(route.query.id as string);
 }
 
 function startRecord() {
@@ -47,7 +52,8 @@ function saveAs(content: Blob, name: string) {
   a.click();
   window.URL.revokeObjectURL(url);
 }
-async function onStop() {
+
+function onStop() {
   console.log('data available after MediaRecorder.stop() called.');
   const blob = new Blob(chunks, {
     type: 'video/webm',
@@ -56,30 +62,11 @@ async function onStop() {
   const record: ClassRecord.ClassRecord = {
     blob,
     blobType: blob.type,
-    notes: [
-      {
-        kind: 'text',
-        content: 'Hello!',
-        title: 'Hello',
-      },
-      {
-        kind: 'text',
-        content: 'Goodbye!',
-        title: 'Goodbye',
-      },
-    ],
+    notes: notes.value
   };
 
   const recordSerialized = ClassRecord.serializeClassRecord(record);
-  const recordDeserialized = await ClassRecord.deserializeClassRecord(recordSerialized);
-
-  chunks.splice(0);
-
-  // const zip = new JSZip();
-  // zip.file("Hello.txt", "Hello World\n");
-  // zip.file("video.webm", blob);
-  // const content = await zip.generateAsync({ type: "blob" })
-  // saveAs(content, "example.zip");
+  saveBlobAs(recordSerialized, 'recording.notes');
 }
 </script>
 
@@ -89,4 +76,6 @@ async function onStop() {
   <button @click="connect">Connect</button>
   <button @click="startRecord">Start record</button>
   <button @click="stopRecord">Stop record</button>
+
+  <Notes v-model='notes' />
 </template>

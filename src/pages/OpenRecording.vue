@@ -5,6 +5,7 @@
         <q-icon name="attach_file" />
       </template>
     </q-file>
+    <video controls :src='recordUrl'></video>
     <p>Notes: {{ notes.length }}</p>
     <div v-if="notes.length > 0">
       <Notes v-model="notes" />
@@ -17,9 +18,13 @@ import { watch, ref } from 'vue';
 import { MediaRecording } from '../models/MediaRecording';
 import { ClassRecord, Note, serializeClassRecord, deserializeClassRecord } from '../models/ClassRecord';
 import Notes from '../components/Notes.vue';
+import { useObjectURL } from 'src/helpers/setObjectURL';
 
 const file = ref<File>();
 const notes = ref<Note[]>([]);
+
+const recordBlob = ref<Blob>();
+const recordUrl = useObjectURL(recordBlob);
 
 watch([file], () => {
   if (file.value) {
@@ -32,6 +37,8 @@ watch([file], () => {
       console.log(classRecord);
       notes.value = classRecord.notes;
       console.log(notes.value);
+
+      recordBlob.value = classRecord.blob;
     };
     reader.readAsArrayBuffer(file.value);
   }

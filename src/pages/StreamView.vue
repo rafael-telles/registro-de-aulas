@@ -4,8 +4,9 @@ import Peer from 'peerjs';
 import PictureInPicture from 'src/components/PictureInPicture.vue';
 import VueQrcode from 'vue-qrcode';
 import { getMediaStream } from 'src/helpers/getMediaStream';
+import uuid4v from 'uuid/v4';
 
-const id = ref('TELLES-123');
+const id = ref(uuid4v());
 const currentVideoTrack = ref(null);
 const videoRef = ref();
 const peer = new Peer(id.value);
@@ -82,5 +83,5 @@ onMounted(() => {
 
   <br />
 
-  <vue-qrcode :value="id" />
+  <vue-qrcode style="width: 100%" :value="id" />
 </template>

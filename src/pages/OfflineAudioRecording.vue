@@ -10,30 +10,14 @@
 </template>
 
 <script lang='ts' setup>
-import { onMounted, onUnmounted, ref } from 'vue';
+import { ref } from 'vue';
 import { MediaRecording } from '../models/MediaRecording';
-import { ClassRecord, deserializeClassRecord, Note, serializeClassRecord } from '../models/ClassRecord';
+import { ClassRecord, Note, serializeClassRecord } from '../models/ClassRecord';
 import Notes from '../components/Notes.vue';
 import { getMediaStream } from 'src/helpers/getMediaStream';
 import { saveBlobAs } from 'src/helpers/saveBlobAs';
+import { useRecordingDuration } from 'src/helpers/useRecordingDuration';
 
-function useRecordingDuration(getRecording: () => MediaRecording | undefined) {
-  const recordingDuration = ref('--:--');
-  const recordingDurationUpdate = ref<NodeJS.Timeout>();
-
-  onMounted(() => {
-    recordingDurationUpdate.value = setInterval(() => {
-      recordingDuration.value = getRecording()?.duration ?? '--:--';
-    }, 100);
-  });
-  onUnmounted(() => {
-    if (recordingDurationUpdate.value) {
-      clearInterval(recordingDurationUpdate.value);
-    }
-  });
-
-  return recordingDuration;
-}
 
 let recording: MediaRecording;
 
