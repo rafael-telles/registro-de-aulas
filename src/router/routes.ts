@@ -10,6 +10,7 @@ const PATH_PATHS = [
   'Settings/FontStyle',
   'StartOfflineRecording',
   'OfflineAudioRecording',
+  'OfflineVideoRecording',
   'OpenRecording',
   'SharedRecording',
   'StreamView',

@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script lang='ts' setup>
 import { getMediaStream } from 'src/helpers/getMediaStream';
 import { ref } from 'vue';
 
@@ -18,6 +18,6 @@ async function enablePIP() {
 </script>
 
 <template>
-  <video ref="videoRef" autoplay playsinline controls muted width="0" height="0"></video>
-  <button @click="enablePIP">PIP</button>
+  <video ref='videoRef' autoplay playsinline controls muted width='0' height='0'></video>
+  <q-btn color='color2' text-color='color1' @click='enablePIP'>PIP</q-btn>
 </template>

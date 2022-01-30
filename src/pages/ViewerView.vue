@@ -73,9 +73,9 @@ function onStop() {
 <template>
   <video ref="videoRef" autoplay playsinline controls width="600" height="400"></video>
   <br />
-  <button @click="connect">Connect</button>
-  <button @click="startRecord">Start record</button>
-  <button @click="stopRecord">Stop record</button>
+  <q-btn color='color2' text-color='color1' @click="connect">Conectar</q-btn>
+  <q-btn color='color2' text-color='color1' @click="startRecord">Start record</q-btn>
+  <q-btn color='color2' text-color='color1' @click="stopRecord">Stop record</q-btn>
 
   <Notes v-model='notes' />
 </template>

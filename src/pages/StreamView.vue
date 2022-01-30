@@ -13,20 +13,16 @@ const peer = new Peer(id.value);
 
 function start() {
   const remoteVideo = videoRef.value;
-  var tempStream = new MediaStream();
-  setTimeout(function () {
+  const tempStream = new MediaStream();
+  setTimeout(function() {
     remoteVideo.srcObject = tempStream.remoteStream;
     remoteVideo.play();
   }, 500);
 
-  console.log(peer);
-  peer.on('open', (id) => {
-    console.log({ id });
-  });
-  peer.on('connection', function (conn) {
+  peer.on('connection', function(conn) {
     const remoteVideo = videoRef.value;
     const newCall = peer.call(conn.peer, remoteVideo.srcObject);
-    console.log({ newCall });
+    // console.log({ newCall });
     // setCalls([...calls, newCall]);
   });
 }
@@ -73,15 +69,14 @@ onMounted(() => {
 </script>
 
 <template>
-  <video ref="videoRef" autoplay playsinline controls muted width="0" height="0"></video>
+  <video ref='videoRef' autoplay playsinline controls muted width='0' height='0'></video>
   <br />
-  <!-- <button @click="start">Start</button> -->
-  <button @click="enableCamera">Camera</button>
-  <button @click="enableScreen">Screen</button>
-  <button @click="toggleAudio">Toggle audio</button>
+  <q-btn color='color2' text-color='color1' @click='enableCamera'>Camera</q-btn>
+  <q-btn color='color2' text-color='color1' @click='enableScreen'>Screen</q-btn>
+  <q-btn color='color2' text-color='color1' @click='toggleAudio'>Toggle audio</q-btn>
   <PictureInPicture />
 
   <br />
 
-  <vue-qrcode style="width: 100%" :value="id" />
+  <vue-qrcode style='width: 100%' :value='id' />
 </template>
