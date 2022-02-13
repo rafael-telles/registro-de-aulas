@@ -1,34 +1,49 @@
-<script setup>
-import { ref, onMounted } from 'vue';
-import Peer from 'peerjs';
+<script setup lang='ts'>
+import { ref, onMounted, computed } from 'vue';
 import PictureInPicture from 'src/components/PictureInPicture.vue';
 import VueQrcode from 'vue-qrcode';
 import { getMediaStream } from 'src/helpers/getMediaStream';
-import uuid4v from 'uuid/v4';
+import { v4 as uuidv4 } from 'uuid';
+import { createPeer } from 'src/helpers/createPeer';
+import { useRouter } from 'vue-router';
 
-const id = ref(uuid4v());
-const currentVideoTrack = ref(null);
-const videoRef = ref();
-const peer = new Peer(id.value);
+declare global {
+  interface MediaStream {
+    remoteStream: MediaStream;
+    replaceVideoTrack: (track: MediaStreamTrack) => void;
+    replaceAudioTrack: (track: MediaStreamTrack) => void;
+  }
+}
 
-function start() {
+const id = ref(uuidv4());
+const currentVideoTrack = ref<MediaStreamTrack | null>(null);
+const videoRef = ref<HTMLVideoElement>();
+
+async function start() {
   const remoteVideo = videoRef.value;
+  if (!remoteVideo) {
+    return;
+  }
+
   const tempStream = new MediaStream();
   setTimeout(function() {
     remoteVideo.srcObject = tempStream.remoteStream;
-    remoteVideo.play();
+    void remoteVideo.play();
   }, 500);
 
+  const peer = await createPeer(id.value);
   peer.on('connection', function(conn) {
+    console.log('connection', conn);
     const remoteVideo = videoRef.value;
-    const newCall = peer.call(conn.peer, remoteVideo.srcObject);
-    // console.log({ newCall });
-    // setCalls([...calls, newCall]);
+    if (!remoteVideo) {
+      return;
+    }
+    peer.call(conn.peer, remoteVideo.srcObject as MediaStream);
   });
 }
 
 function toggleAudio() {
-  const stream = videoRef.value.srcObject;
+  const stream = videoRef.value?.srcObject as MediaStream;
   const audioTrack = stream.getAudioTracks()[0];
   audioTrack.enabled = !audioTrack.enabled;
 }
@@ -42,6 +57,9 @@ function disableCurrentVideo() {
 
 async function enableCamera() {
   const stream = await getMediaStream({ video: true, audio: true });
+  if (!stream) {
+    return;
+  }
 
   disableCurrentVideo();
 
@@ -63,8 +81,15 @@ async function enableScreen() {
   currentVideoTrack.value = videoTrack;
 }
 
-onMounted(() => {
-  void start();
+onMounted(async () => {
+  await start();
+  await enableCamera();
+});
+
+const router = useRouter();
+const viewerUrl = computed(() => {
+  const resolvedRoute = router.resolve({ path: '/ViewerView', query: { id: id.value } });
+  return window.location.origin + '/' + resolvedRoute.href;
 });
 </script>
 
@@ -78,5 +103,6 @@ onMounted(() => {
 
   <br />
 
-  <vue-qrcode style='width: 100%' :value='id' />
+  <pre v-html='viewerUrl'></pre>
+  <vue-qrcode style='width: 50%' :value='id' />
 </template>
