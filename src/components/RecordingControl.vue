@@ -15,9 +15,12 @@ import { saveBlobAs } from 'src/helpers/saveBlobAs';
 import { ref } from 'vue';
 import { useRecordingDuration } from 'src/helpers/useRecordingDuration';
 import Notes from 'src/components/Notes.vue';
+import { useQuasar } from 'quasar';
+
+const $q = useQuasar()
 
 const props = defineProps<{
-  streamProvider: () => MediaStream;
+  streamProvider: () => Promise<MediaStream> | MediaStream;
 }>()
 
 let recording: MediaRecording;
@@ -26,9 +29,9 @@ const notes = ref<Note[]>([]);
 const isRecording = ref(false);
 const recordingDuration = useRecordingDuration(() => recording);
 
-function startRecord() {
-  console.log(props.streamProvider());
-  recording = new MediaRecording(props.streamProvider());
+async function startRecord() {
+  const stream = await props.streamProvider();
+  recording = new MediaRecording(stream);
   recording.start();
 
   isRecording.value = true;
@@ -45,6 +48,17 @@ async function stopRecord() {
 
   const classRecordBlob = serializeClassRecord(classRecord);
 
-  saveBlobAs(classRecordBlob, 'recording.notes');
+  $q.dialog({
+    title: 'Salvar anotações',
+    message: 'Como quer chamar essa gravação?',
+    prompt: {
+      model: 'Notas',
+      type: 'text' // optional
+    },
+    cancel: true,
+    persistent: true
+  }).onOk((data: string) => {
+    saveBlobAs(classRecordBlob, `${data}.rda`);
+  })
 }
 </script>

@@ -3,7 +3,7 @@ import { Notify } from 'quasar';
 export async function getMediaStream(constraints: {
   video?: boolean;
   audio?: boolean;
-}): Promise<MediaStream | undefined> {
+}): Promise<MediaStream> {
   try {
     return await navigator.mediaDevices.getUserMedia(constraints);
   } catch (e) {
@@ -14,6 +14,7 @@ export async function getMediaStream(constraints: {
       message: `Não foi possível capturar ${constraints.video ? 'video' : 'audio'} do seu dispositivo:\n${String(e)}`,
       icon: 'error',
     });
+    throw e
   }
 }
 

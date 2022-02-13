@@ -12,14 +12,9 @@ import { getMediaStream } from 'src/helpers/getMediaStream';
 import RecordingControl from 'src/components/RecordingControl.vue';
 
 const videoRef = ref<HTMLVideoElement>();
-let mediaStream: MediaStream | undefined;
 onMounted(async () => {
-  mediaStream = await getMediaStream({ video: true, audio: true });
-  if (!mediaStream) {
-    return;
-  }
-  videoRef.value!.srcObject = mediaStream;
+  videoRef.value!.srcObject = await getMediaStream({ video: true, audio: true });
 });
 
-const streamProvider = () => mediaStream;
+const streamProvider = () => videoRef.value!.srcObject as MediaStream;
 </script>
