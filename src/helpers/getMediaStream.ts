@@ -1,4 +1,6 @@
-import { Notify } from 'quasar';
+import { useQuasar } from 'quasar';
+
+const $q = useQuasar()
 
 export async function getMediaStream(constraints: {
   video?: boolean;
@@ -7,7 +9,7 @@ export async function getMediaStream(constraints: {
   try {
     return await navigator.mediaDevices.getUserMedia(constraints);
   } catch (e) {
-    Notify.create({
+    $q.notify({
       color: 'red-6',
       textColor: 'white',
       multiLine: true,

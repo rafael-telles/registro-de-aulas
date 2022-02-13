@@ -6,6 +6,7 @@ import { getMediaStream } from 'src/helpers/getMediaStream';
 import { v4 as uuidv4 } from 'uuid';
 import { createPeer } from 'src/helpers/createPeer';
 import { useRouter } from 'vue-router';
+import { copyToClipboard, useQuasar } from 'quasar';
 
 declare global {
   interface MediaStream {
@@ -14,6 +15,8 @@ declare global {
     replaceAudioTrack: (track: MediaStreamTrack) => void;
   }
 }
+
+const $q = useQuasar();
 
 const id = ref(uuidv4());
 const currentVideoTrack = ref<MediaStreamTrack | null>(null);
@@ -91,18 +94,46 @@ const viewerUrl = computed(() => {
   const resolvedRoute = router.resolve({ path: '/ViewerView', query: { id: id.value } });
   return window.location.origin + '/' + resolvedRoute.href;
 });
+
+async function copyViewerUrl() {
+  await copyToClipboard(viewerUrl.value)
+  $q.notify({
+    type: 'positive',
+    message: 'Link copiado!'
+  })
+}
 </script>
 
 <template>
-  <video ref='videoRef' autoplay playsinline controls muted width='0' height='0'></video>
-  <br />
-  <q-btn color='color2' text-color='color1' @click='enableCamera'>Camera</q-btn>
-  <q-btn color='color2' text-color='color1' @click='enableScreen'>Screen</q-btn>
-  <q-btn color='color2' text-color='color1' @click='toggleAudio'>Toggle audio</q-btn>
-  <PictureInPicture />
+  <div class='column'>
+    <video ref='videoRef' autoplay playsinline controls muted width='0' height='0'></video>
+    <div class='row justify-center'>
+      <q-btn color='color2' text-color='color1' @click='enableCamera'>Camera</q-btn>
+      <q-btn color='color2' text-color='color1' @click='enableScreen'>Screen</q-btn>
+      <q-btn color='color2' text-color='color1' @click='toggleAudio'>Toggle audio</q-btn>
+      <PictureInPicture />
+    </div>
 
-  <br />
+    <div class='column items-center'>
+      <h3>Você está transmitindo!</h3>
+      <p>Compartilhe o link abaixo para que outras pessoas possam assistir sua transmissão:</p>
 
-  <pre v-html='viewerUrl'></pre>
-  <vue-qrcode style='width: 50%' :value='id' />
+      <div class='column' style='flex-flow: nowrap; border: 1px solid black; border-radius: 8px; padding: 0 8px; margin-bottom: 20px'>
+        <pre v-html='viewerUrl'></pre>
+        <q-btn flat icon='content_copy' @click='copyViewerUrl'></q-btn>
+      </div>
+
+      <p>Ou compartilhe esse QR Code:</p>
+      <vue-qrcode :value='id' />
+
+    </div>
+
+
+  </div>
 </template>
+
+<style scoped>
+pre {
+  white-space: pre-wrap;
+}
+</style>

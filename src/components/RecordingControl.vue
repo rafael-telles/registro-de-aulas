@@ -1,27 +1,27 @@
 <template>
   <div>
-  <div class='row items-center'>
-    <q-btn v-if='isRecording' color='color2' text-color='color1' label='Terminar Gravação' @click='stopRecord' />
-    <q-btn v-else color='color2' text-color='color1' label='Iniciar Gravação' @click='startRecord' />
-    <span class='offset-1'>{{ recordingDuration }}</span>
-  </div>
-  <Notes v-model='notes' />
+    <div class='row items-center'>
+      <q-btn v-if='isRecording' color='color2' text-color='color1' label='Terminar Gravação' @click='stopRecord' />
+      <q-btn v-else color='color2' text-color='color1' label='Iniciar Gravação' @click='startRecord' />
+      <span class='offset-1'>{{ recordingDuration }}</span>
+    </div>
+    <Notes v-model='notes' />
   </div>
 </template>
 <script lang='ts' setup>
 import { MediaRecording } from 'src/models/MediaRecording';
 import { ClassRecord, Note, serializeClassRecord } from 'src/models/ClassRecord';
-import { saveBlobAs } from 'src/helpers/saveBlobAs';
 import { ref } from 'vue';
 import { useRecordingDuration } from 'src/helpers/useRecordingDuration';
 import Notes from 'src/components/Notes.vue';
 import { useQuasar } from 'quasar';
+import { exportFile } from 'quasar';
 
-const $q = useQuasar()
+const $q = useQuasar();
 
 const props = defineProps<{
   streamProvider: () => Promise<MediaStream> | MediaStream;
-}>()
+}>();
 
 let recording: MediaRecording;
 
@@ -58,7 +58,7 @@ async function stopRecord() {
     cancel: true,
     persistent: true
   }).onOk((data: string) => {
-    saveBlobAs(classRecordBlob, `${data}.rda`);
-  })
+    exportFile(`${data}.rda`, classRecordBlob);
+  });
 }
 </script>
