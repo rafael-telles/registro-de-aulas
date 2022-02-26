@@ -1,4 +1,5 @@
 import { setCssVar } from 'quasar';
+import { Dark } from 'quasar'
 
 type Settings = {
   color1: string;
@@ -30,6 +31,8 @@ function loadFromLocalStorage(): Settings {
 }
 
 function applySettings(settings: Settings) {
+  Dark.set(true)
+
   // Save on LocalStorage
   localStorage.setItem('settings', JSON.stringify(settings));
 
@@ -55,4 +58,6 @@ export const SETTINGS: Settings = new Proxy(rawSettings, {
   },
 });
 
-applySettings(SETTINGS);
+setTimeout(() => {
+  applySettings(SETTINGS);
+}, 0);

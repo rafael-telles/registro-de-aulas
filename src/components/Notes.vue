@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { watch, onMounted, ref, defineEmits, defineProps } from 'vue';
 import { Note } from '../models/ClassRecord';
+import MyButton from 'components/MyButton.vue';
 
 const props = defineProps<{
   modelValue: Note[];
@@ -38,14 +39,14 @@ function saveNote() {
 </script>
 
 <template>
-  <div class="row">
+  <div class="row q-gutter-sm">
     <q-select class="col" outlined v-model="currentNote" :options="notes" option-label="title" label="Anotações" />
-    <q-btn size="sm" color="color2" text-color="color1" icon="add" @click="addNewNote" />
+    <my-button size="sm" icon="add" @click="addNewNote" />
   </div>
 
   <div v-if="currentNote">
     <q-input v-model="currentNote.title" label="Título" />
     <q-input v-model="currentNote.content" filled type="textarea" label="Conteúdo" />
-    <q-btn color="color2" text-color="color1" label="Salvar" @click="saveNote" />
+    <my-button label="Salvar" @click="saveNote" />
   </div>
 </template>

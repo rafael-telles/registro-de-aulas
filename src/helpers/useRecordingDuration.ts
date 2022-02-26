@@ -10,7 +10,7 @@ export function useRecordingDuration(getRecording: () => MediaRecording | undefi
     if (recording) {
       recordingDuration.value = getRecording()?.duration ?? '--:--';
     }
-  }, 1000);
+  }, 100);
 
   return recordingDuration;
 }

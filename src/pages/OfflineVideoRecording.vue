@@ -1,8 +1,8 @@
 <template>
-  <div class='q-px-lg column items-center justify-evenly items-stretch'>
-    <video ref="videoRef" autoplay playsinline controls></video>
+  <div class='column items-center justify-evenly items-stretch'>
+    <video style='max-height: 30vh; background: var(--q-color2)' class='row' ref="videoRef" autoplay playsinline controls></video>
 
-    <RecordingControl :streamProvider='streamProvider' />
+    <RecordingControl class='row' :streamProvider='streamProvider' />
   </div>
 </template>
 

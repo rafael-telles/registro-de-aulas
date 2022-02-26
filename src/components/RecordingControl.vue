@@ -1,9 +1,9 @@
 <template>
-  <div>
-    <div class='row items-center'>
-      <q-btn v-if='isRecording' color='color2' text-color='color1' label='Terminar Gravação' @click='stopRecord' />
-      <q-btn v-else color='color2' text-color='color1' label='Iniciar Gravação' @click='startRecord' />
-      <span class='offset-1'>{{ recordingDuration }}</span>
+  <div class='column q-pa-sm'>
+    <div class='row full-width items-stretch q-gutter-xs q-mb-sm'>
+      <my-button class='col' v-if='isRecording' label='Terminar Gravação' @click='stopRecord' />
+      <my-button class='col' v-else label='Iniciar Gravação' @click='startRecord' />
+      <my-button class='col recording-duration' :label='recordingDuration' />
     </div>
     <Notes v-model='notes' />
   </div>
@@ -16,6 +16,7 @@ import { useRecordingDuration } from 'src/helpers/useRecordingDuration';
 import Notes from 'src/components/Notes.vue';
 import { useQuasar } from 'quasar';
 import { exportFile } from 'quasar';
+import MyButton from 'components/MyButton.vue';
 
 const $q = useQuasar();
 
@@ -62,3 +63,10 @@ async function stopRecord() {
   });
 }
 </script>
+
+<style>
+.recording-duration {
+  /*font-family: monospace;*/
+}
+
+</style>

@@ -2,10 +2,10 @@
   <q-layout view="lHh Lpr lFf">
     <q-header elevated>
       <q-toolbar class="row">
-        <q-btn class="col" flat dense round icon="home" aria-label="Início" @click="goToHome" />
-        <q-btn class="col" flat dense round icon="settings" aria-label="Configurações" @click="goToSettings" />
-        <q-btn class="col" flat dense round icon="help" aria-label="Ajuda" @click="goToHelp" />
-        <q-btn class="col" disabled flat dense round icon="waving_hand" aria-label="Libras" />
+        <my-button class="col" flat dense round icon="home" aria-label="Início" @click="goToHome" />
+        <my-button class="col" flat dense round icon="settings" aria-label="Configurações" @click="goToSettings" />
+        <my-button class="col" flat dense round icon="help" aria-label="Ajuda" @click="goToHelp" />
+        <my-button class="col" disabled flat dense round icon="waving_hand" aria-label="Libras" />
       </q-toolbar>
     </q-header>
 
@@ -20,6 +20,7 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
 import { goTo } from 'src/helpers/goTo';
+import MyButton from 'components/MyButton.vue';
 
 const router = useRouter();
 

@@ -7,6 +7,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { createPeer } from 'src/helpers/createPeer';
 import { useRouter } from 'vue-router';
 import { copyToClipboard, useQuasar } from 'quasar';
+import MyButton from 'components/MyButton.vue';
 
 declare global {
   interface MediaStream {
@@ -108,9 +109,9 @@ async function copyViewerUrl() {
   <div class='column'>
     <video ref='videoRef' autoplay playsinline controls muted width='0' height='0'></video>
     <div class='row justify-center'>
-      <q-btn color='color2' text-color='color1' @click='enableCamera'>Camera</q-btn>
-      <q-btn color='color2' text-color='color1' @click='enableScreen'>Screen</q-btn>
-      <q-btn color='color2' text-color='color1' @click='toggleAudio'>Toggle audio</q-btn>
+      <my-button @click='enableCamera' label='Camera' />
+      <my-button @click='enableScreen' label='Screen' />
+      <my-button @click='toggleAudio' label='Toggle audio' />
       <PictureInPicture />
     </div>
 

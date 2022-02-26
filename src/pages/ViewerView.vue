@@ -34,9 +34,9 @@ const streamProvider = () => videoRef.value?.srcObject as MediaStream;
 </script>
 
 <template>
-  <div>
-    <video ref='videoRef' autoplay playsinline controls width='600' height='400'></video>
+  <div class='column items-center justify-evenly items-stretch'>
+    <video style='max-height: 30vh; background: var(--q-color2)' class='row' ref="videoRef" autoplay playsinline controls></video>
 
-    <RecordingControl :streamProvider='streamProvider' />
+    <RecordingControl class='row' :streamProvider='streamProvider' />
   </div>
 </template>
