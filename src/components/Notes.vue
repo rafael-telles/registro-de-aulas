@@ -36,6 +36,14 @@ function addNewNote() {
 function saveNote() {
   currentNote.value = undefined;
 }
+function deleteNote() {
+  if (!currentNote.value) return;
+
+  const index = notes.value.indexOf(currentNote.value);
+  notes.value.splice(index, 1);
+  emit('update:modelValue', notes.value);
+  currentNote.value = undefined;
+}
 </script>
 
 <template>
@@ -48,5 +56,6 @@ function saveNote() {
     <q-input v-model="currentNote.title" label="Título" />
     <q-input v-model="currentNote.content" filled type="textarea" label="Conteúdo" />
     <my-button label="Salvar" @click="saveNote" />
+    <my-button class='q-ml-xs' icon='delete' @click="deleteNote" />
   </div>
 </template>
