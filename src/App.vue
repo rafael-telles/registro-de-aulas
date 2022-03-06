@@ -7,15 +7,14 @@
 import { ref } from 'vue';
 import './ReplaceableMediaStream';
 import './models/Settings';
-import { usePinch } from '@vueuse/gesture';
+import { FullGestureState, usePinch } from '@vueuse/gesture';
 import { useQuasar } from 'quasar';
 import { SETTINGS } from 'src/models/Settings';
 
-const $q = useQuasar();
-
 const el = ref();
-const pinchHandler = ({ offset: [d, a], pinching }) => {
-  SETTINGS.relativeFontSize = d * 0.005;
+const pinchHandler = (state: FullGestureState<'pinch'>) => {
+  SETTINGS.relativeFontSize += state.delta[0] * 0.005;
+  SETTINGS.relativeFontSize = Math.min(Math.max(SETTINGS.relativeFontSize, 0.1), 3);
 }
 
 usePinch(pinchHandler, {

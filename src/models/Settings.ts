@@ -1,5 +1,4 @@
 import { setCssVar } from 'quasar';
-import { Dark } from 'quasar'
 
 type Settings = {
   color1: string;

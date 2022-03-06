@@ -1,12 +1,17 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
 import { SETTINGS } from 'src/models/Settings';
+import { useInterval } from 'src/helpers/useInterval';
 
-let relativeFontSize = ref(SETTINGS.relativeFontSize);
+const relativeFontSize = ref(SETTINGS.relativeFontSize);
 
 watch(relativeFontSize, (newValue) => {
   SETTINGS.relativeFontSize = newValue;
 });
+
+useInterval(() => {
+  relativeFontSize.value = SETTINGS.relativeFontSize;
+}, 100);
 </script>
 
 <template>
