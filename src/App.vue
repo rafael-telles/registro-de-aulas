@@ -1,12 +1,27 @@
 <template>
-  <router-view />
+  <div ref="el">
+    <router-view />
+  </div>
 </template>
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script lang="ts" setup>
+import { ref } from 'vue';
 import './ReplaceableMediaStream';
 import './models/Settings';
+import { usePinch } from '@vueuse/gesture';
+import { useQuasar } from 'quasar';
+import { SETTINGS } from 'src/models/Settings';
 
-export default defineComponent({
-  name: 'App',
-});
+const $q = useQuasar();
+
+const el = ref();
+const pinchHandler = ({ offset: [d, a], pinching }) => {
+  SETTINGS.relativeFontSize = d * 0.005;
+}
+
+usePinch(pinchHandler, {
+  domTarget: el,
+  eventOptions: {
+    passive: true,
+  },
+})
 </script>
