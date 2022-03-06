@@ -1,11 +1,12 @@
 <script setup lang='ts'>
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted, computed, onUnmounted } from 'vue';
 import PictureInPicture from 'src/components/PictureInPicture.vue';
 import VueQrcode from 'vue-qrcode';
-import { getMediaStream } from 'src/helpers/getMediaStream';
 import { createPeer } from 'src/helpers/createPeer';
 import { useQuasar } from 'quasar';
 import MyButton from 'components/MyButton.vue';
+import RecordingControl from 'src/components/RecordingControl.vue';
+import { useMediaStreamProvider } from 'src/helpers/useMediaStreamProvider';
 
 declare global {
   interface MediaStream {
@@ -16,6 +17,7 @@ declare global {
 }
 
 const $q = useQuasar();
+const mediaStreamProvider = useMediaStreamProvider();
 
 const generatePin = () => {
   return Math.floor(Math.random() * 0xFFFFFFFF).toString(16);
@@ -70,7 +72,7 @@ function disableCurrentVideo() {
 }
 
 async function enableCamera() {
-  const stream = await getMediaStream({ video: true, audio: true });
+  const stream = await mediaStreamProvider.getMediaStream({ video: true, audio: true });
   if (!stream) {
     return;
   }
@@ -96,7 +98,7 @@ async function toggleCamera() {
 }
 
 async function enableScreenShare() {
-  const stream = await navigator.mediaDevices.getDisplayMedia({ video: true });
+  const stream = await mediaStreamProvider.getDisplayMedia({ video: true });
 
   disableCurrentVideo();
 
@@ -133,58 +135,69 @@ const audioIcon = computed(() => {
   return isAudioEnabled.value ? 'mic' : 'mic_off';
 });
 
+const streamProvider = () => videoRef.value!.srcObject as MediaStream;
+
 </script>
 
 <template>
-  <div class='column'>
-    <video ref='videoRef' autoplay playsinline controls muted width='0' height='0'></video>
+  <div class='row'>
+    <div class='col'>
+      <div class='column items-center'>
+        <h5 class='q-px-sm q-mt-lg text-center'>Mostre esse código de acesso aos usuários participantes da sessão</h5>
 
-    <div class='column items-center'>
-      <h5 class='q-px-sm q-mt-lg text-center'>Mostre esse código de acesso aos usuários participantes da sessão</h5>
+        <vue-qrcode :value='pin' />
 
-      <vue-qrcode :value='pin' />
+        <div class='column'
+             style='flex-flow: nowrap; border: 1px solid black; border-radius: 8px; padding: 0 8px; margin-bottom: 20px'>
+          <pre>PIN: {{ pin }}</pre>
+        </div>
 
-      <div class='column'
-           style='flex-flow: nowrap; border: 1px solid black; border-radius: 8px; padding: 0 8px; margin-bottom: 20px'>
-        <pre>PIN: {{ pin }}</pre>
       </div>
 
+      <div class='row justify-center'>
+        <my-button @click='toggleCamera' :icon='cameraIcon'>
+          <q-tooltip v-if='isCameraEnabled'>
+            Sua câmera está sendo transmitida, clique para desativar.
+          </q-tooltip>
+          <q-tooltip v-else>
+            Clique para ativar sua câmera.
+          </q-tooltip>
+        </my-button>
+        <my-button class='q-ml-xs' @click='toggleScreenShare' :icon='screenShareIcon'>
+          <q-tooltip v-if='isScreenShareEnabled'>
+            Sua tela está sendo transmitida, clique para desativar.
+          </q-tooltip>
+          <q-tooltip v-else>
+            Clique para ativar sua tela.
+          </q-tooltip>
+        </my-button>
+        <my-button class='q-ml-xs' @click='toggleAudio' :icon='audioIcon'>
+          <q-tooltip v-if='isAudioEnabled'>
+            Sua áudio está sendo transmitido, clique para desativar.
+          </q-tooltip>
+          <q-tooltip v-else>
+            Clique para ativar sua áudio.
+          </q-tooltip>
+        </my-button>
+        <PictureInPicture class='q-ml-xs' />
+      </div>
     </div>
+    <div class='col'>
+      <video ref='videoRef' autoplay playsinline controls muted></video>
 
-    <div class='row justify-center'>
-      <my-button @click='toggleCamera' :icon='cameraIcon'>
-        <q-tooltip v-if='isCameraEnabled'>
-          Sua câmera está sendo transmitida, clique para desativar.
-        </q-tooltip>
-        <q-tooltip v-else>
-          Clique para ativar sua câmera.
-        </q-tooltip>
-      </my-button>
-      <my-button class='q-ml-xs' @click='toggleScreenShare' :icon='screenShareIcon'>
-        <q-tooltip v-if='isScreenShareEnabled'>
-          Sua tela está sendo transmitida, clique para desativar.
-        </q-tooltip>
-        <q-tooltip v-else>
-          Clique para ativar sua tela.
-        </q-tooltip>
-      </my-button>
-      <my-button class='q-ml-xs' @click='toggleAudio' :icon='audioIcon'>
-        <q-tooltip v-if='isAudioEnabled'>
-          Sua áudio está sendo transmitido, clique para desativar.
-        </q-tooltip>
-        <q-tooltip v-else>
-          Clique para ativar sua áudio.
-        </q-tooltip>
-      </my-button>
-      <PictureInPicture class='q-ml-xs' />
+      <RecordingControl class='row' :streamProvider='streamProvider' />
     </div>
-
-
   </div>
 </template>
 
 <style scoped>
 pre {
   white-space: pre-wrap;
+}
+
+video {
+  max-height: 30vh;
+  width: 100%;
+  background: var(--q-color2);
 }
 </style>

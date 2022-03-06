@@ -44,7 +44,7 @@ const streamProvider = () => videoRef.value?.srcObject as MediaStream;
 <style lang='scss' scoped>
 video {
   max-height: 30vh;
-  max-width: 100%;
+  width: 100%;
   background: var(--q-color2);
 }
 </style>

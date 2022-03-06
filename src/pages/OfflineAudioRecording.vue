@@ -3,8 +3,9 @@
 </template>
 
 <script lang='ts' setup>
-import { getMediaStream } from 'src/helpers/getMediaStream';
+import { useMediaStreamProvider } from 'src/helpers/useMediaStreamProvider';
 import RecordingControl from 'src/components/RecordingControl.vue';
 
-const streamProvider = () => getMediaStream({ audio: true });
+const mediaStreamProvider = useMediaStreamProvider();
+const streamProvider = () => mediaStreamProvider.getMediaStream({ audio: true });
 </script>

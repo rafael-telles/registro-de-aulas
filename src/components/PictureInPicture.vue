@@ -1,14 +1,15 @@
 <script lang='ts' setup>
-import { getMediaStream } from 'src/helpers/getMediaStream';
 import { ref } from 'vue';
 import MyButton from 'components/MyButton.vue';
+import { useMediaStreamProvider } from 'src/helpers/useMediaStreamProvider';
 
+const mediaStreamProvider = useMediaStreamProvider();
 const videoRef = ref();
 
 async function enablePIP() {
   const videoEl: HTMLVideoElement = videoRef.value;
 
-  const cameraStream = await getMediaStream({ video: true });
+  const cameraStream = await mediaStreamProvider.getMediaStream({ video: true });
   if (!cameraStream) return;
 
   videoEl.srcObject = cameraStream;
