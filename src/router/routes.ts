@@ -25,11 +25,11 @@ export type PagePath = typeof PATH_PATHS[number]
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
-    component: () => import(/* webpackPrefetch: true */ 'layouts/MainLayout.vue'),
+    component: () => import(/* webpackChunkName: "all" */ 'layouts/MainLayout.vue'),
     children: [
       { path: '', redirect: 'Index' as PagePath },
       ...PATH_PATHS.map(pagePath => {
-        return { path: pagePath, component: () => import(/* webpackPrefetch: true */ `src/pages/${pagePath}.vue`) };
+        return { path: pagePath, component: () => import(/* webpackChunkName: "all" */ `src/pages/${pagePath}.vue`) };
       })
     ]
   },
