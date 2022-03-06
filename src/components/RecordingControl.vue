@@ -61,6 +61,8 @@ async function stopRecord() {
   }).onOk((data: string) => {
     exportFile(`${data}.rda`, classRecordBlob);
   });
+
+  isRecording.value = false;
 }
 </script>
 

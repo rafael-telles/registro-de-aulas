@@ -40,24 +40,23 @@ watch(color2, (newValue) => {
         size="sm"
         round
         v-for="color in colorOptions"
-        :class="{ active: color == color1 }"
+        :class="{ active: color === color2 }"
         :style="{ backgroundColor: color }"
         :key="color"
-        @click="color1 = color"
+        @click="color2 = color"
       />
     </div>
 
     <p>Cor de fundo:</p>
-
     <div class="row">
       <q-btn
         size="sm"
         round
         v-for="color in colorOptions"
-        :class="{ active: color == color2 }"
+        :class="{ active: color === color1 }"
         :style="{ backgroundColor: color }"
         :key="color"
-        @click="color2 = color"
+        @click="color1 = color"
       />
     </div>
   </q-page>

@@ -21,7 +21,11 @@ async function enablePIP() {
 
 <template>
   <div>
-    <my-button @click='enablePIP' label='PIP' />
+    <my-button @click='enablePIP' icon='picture_in_picture'>
+      <q-tooltip>
+        Picture-in-Picture
+      </q-tooltip>
+    </my-button>
     <video ref='videoRef' autoplay playsinline controls muted width='0' height='0'></video>
   </div>
 </template>
