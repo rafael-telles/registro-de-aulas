@@ -147,8 +147,7 @@ const streamProvider = () => videoRef.value!.srcObject as MediaStream;
 
         <vue-qrcode :value='pin' />
 
-        <div class='column'
-             style='flex-flow: nowrap; border: 1px solid black; border-radius: 8px; padding: 0 8px; margin-bottom: 20px'>
+        <div class='column pin-box'>
           <pre>PIN: {{ pin }}</pre>
         </div>
 
@@ -193,6 +192,14 @@ const streamProvider = () => videoRef.value!.srcObject as MediaStream;
 <style scoped>
 pre {
   white-space: pre-wrap;
+}
+
+.pin-box {
+  flex-flow: nowrap;
+  border: 1px solid var(--q-color2);
+  border-radius: 8px;
+  padding: 0 8px;
+  margin: 8px;
 }
 
 video {

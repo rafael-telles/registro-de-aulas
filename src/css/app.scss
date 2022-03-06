@@ -18,3 +18,7 @@ body {
   background: var(--q-color1);
   color: var(--q-color2);
 }
+
+.q-field__native, .q-field__prefix, .q-field__suffix, .q-field__input, .q-field__label {
+  color: var(--q-color2);
+}
