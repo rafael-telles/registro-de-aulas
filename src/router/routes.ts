@@ -1,35 +1,56 @@
 import { RouteRecordRaw } from 'vue-router';
 
-const PATH_PATHS = [
-  'Index',
-  'Settings',
-  'Settings/Colors',
-  'Settings/FontSize',
-  'Settings/InvertColors',
-  'Settings/FontWeight',
-  'Settings/FontStyle',
-  'StartOfflineRecording',
-  'OfflineAudioRecording',
-  'OfflineVideoRecording',
-  'OpenRecording',
-  'SharedRecording',
-  'StreamView',
-  'ViewerView',
-  'JoinStreamView',
-  'QrCodeReaderView',
-  'Help'
-] as const;
+import MainLayout from 'layouts/MainLayout.vue'
+import Error404 from 'src/pages/Error404.vue'
+import Index from 'src/pages/Index.vue'
+import Settings from 'src/pages/Settings.vue'
+import SettingsColors from 'src/pages/Settings/Colors.vue'
+import SettingsFontSize from 'src/pages/Settings/FontSize.vue'
+import SettingsInvertColors from 'src/pages/Settings/InvertColors.vue'
+import SettingsFontWeight from 'src/pages/Settings/FontWeight.vue'
+import SettingsFontStyle from 'src/pages/Settings/FontStyle.vue'
+import StartOfflineRecording from 'src/pages/StartOfflineRecording.vue'
+import OfflineAudioRecording from 'src/pages/OfflineAudioRecording.vue'
+import OfflineVideoRecording from 'src/pages/OfflineVideoRecording.vue'
+import OpenRecording from 'src/pages/OpenRecording.vue'
+import SharedRecording from 'src/pages/SharedRecording.vue'
+import StreamView from 'src/pages/StreamView.vue'
+import ViewerView from 'src/pages/ViewerView.vue'
+import JoinStreamView from 'src/pages/JoinStreamView.vue'
+import QrCodeReaderView from 'src/pages/QrCodeReaderView.vue'
+import Help from 'src/pages/Help.vue'
 
-export type PagePath = typeof PATH_PATHS[number]
+const PATH_PATHS = {
+  'Index': Index,
+  'Settings': Settings,
+  'Settings/Colors': SettingsColors,
+  'Settings/FontSize': SettingsFontSize,
+  'Settings/InvertColors': SettingsInvertColors,
+  'Settings/FontWeight': SettingsFontWeight,
+  'Settings/FontStyle': SettingsFontStyle,
+  'StartOfflineRecording': StartOfflineRecording,
+  'OfflineAudioRecording': OfflineAudioRecording,
+  'OfflineVideoRecording': OfflineVideoRecording,
+  'OpenRecording': OpenRecording,
+  'SharedRecording': SharedRecording,
+  'StreamView': StreamView,
+  'ViewerView': ViewerView,
+  'JoinStreamView': JoinStreamView,
+  'QrCodeReaderView': QrCodeReaderView,
+  'Help': Help,
+} as const;
+
+export type PagePath = keyof typeof PATH_PATHS
 
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
-    component: () => import(/* webpackChunkName: "all" */ 'layouts/MainLayout.vue'),
+    component: MainLayout,
     children: [
       { path: '', redirect: 'Index' as PagePath },
-      ...PATH_PATHS.map(pagePath => {
-        return { path: pagePath, component: () => import(/* webpackChunkName: "all" */ `src/pages/${pagePath}.vue`) };
+      ...Object.keys(PATH_PATHS).map(pagePath => {
+        // @ts-ignore
+        return { path: pagePath, component: PATH_PATHS[pagePath] }
       })
     ]
   },
@@ -38,7 +59,7 @@ const routes: RouteRecordRaw[] = [
   // but you can also remove it
   {
     path: '/:catchAll(.*)*',
-    component: () => import('pages/Error404.vue')
+    component: Error404
   }
 ];
 
