@@ -17,11 +17,6 @@
             Ajuda
           </q-tooltip>
         </my-button>
-        <my-button class="col" disabled flat dense round icon="waving_hand" aria-label="Libras">
-          <q-tooltip>
-            Libras
-          </q-tooltip>
-        </my-button>
       </q-toolbar>
     </q-header>
 
