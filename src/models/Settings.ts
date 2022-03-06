@@ -31,8 +31,6 @@ function loadFromLocalStorage(): Settings {
 }
 
 function applySettings(settings: Settings) {
-  Dark.set(true)
-
   // Save on LocalStorage
   localStorage.setItem('settings', JSON.stringify(settings));
 

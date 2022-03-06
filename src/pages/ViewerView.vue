@@ -9,10 +9,10 @@ const videoRef = ref<HTMLVideoElement>();
 
 async function connect() {
   const peer = await createPeer();
-  const id = route.query.id as string;
+  const pin = route.query.pin as string;
 
-  console.log('connecting to ', id);
-  peer.connect(id);
+  console.log('connecting to ', pin);
+  peer.connect(pin);
   peer.on('call', function(call) {
     console.log('got call', call);
     call.on('stream', function(stream) {

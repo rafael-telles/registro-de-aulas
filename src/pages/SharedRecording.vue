@@ -6,7 +6,7 @@ import ButtonsOnlyPage, { Button } from 'pages/ButtonsOnlyPage.vue';
 
 const buttons: Button[] = [{
   label: 'Entrar em uma sala existente',
-  goTo: 'QrCodeReaderView'
+  goTo: 'JoinStreamView'
 }, {
   label: 'Criar uma nova sala',
   goTo: 'StreamView'

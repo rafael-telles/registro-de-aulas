@@ -3,10 +3,8 @@ import { ref, onMounted, computed } from 'vue';
 import PictureInPicture from 'src/components/PictureInPicture.vue';
 import VueQrcode from 'vue-qrcode';
 import { getMediaStream } from 'src/helpers/getMediaStream';
-import { v4 as uuidv4 } from 'uuid';
 import { createPeer } from 'src/helpers/createPeer';
-import { useRouter } from 'vue-router';
-import { copyToClipboard, useQuasar } from 'quasar';
+import { useQuasar } from 'quasar';
 import MyButton from 'components/MyButton.vue';
 
 declare global {
@@ -19,7 +17,10 @@ declare global {
 
 const $q = useQuasar();
 
-const id = ref(uuidv4());
+const generatePin = () => {
+  return Math.floor(Math.random() * 0xFFFFFFFF).toString(16);
+};
+const pin = ref(generatePin());
 const currentVideoTrack = ref<MediaStreamTrack | null>(null);
 const videoRef = ref<HTMLVideoElement>();
 
@@ -35,7 +36,7 @@ async function start() {
     void remoteVideo.play();
   }, 500);
 
-  const peer = await createPeer(id.value);
+  const peer = await createPeer(pin.value);
   peer.on('connection', function(conn) {
     console.log('connection', conn);
     const remoteVideo = videoRef.value;
@@ -90,43 +91,29 @@ onMounted(async () => {
   await enableCamera();
 });
 
-const router = useRouter();
-const viewerUrl = computed(() => {
-  const resolvedRoute = router.resolve({ path: '/ViewerView', query: { id: id.value } });
-  return window.location.origin + '/' + resolvedRoute.href;
-});
-
-async function copyViewerUrl() {
-  await copyToClipboard(viewerUrl.value)
-  $q.notify({
-    type: 'positive',
-    message: 'Link copiado!'
-  })
-}
 </script>
 
 <template>
   <div class='column'>
     <video ref='videoRef' autoplay playsinline controls muted width='0' height='0'></video>
+
+    <div class='column items-center'>
+      <h5 class='q-px-sm q-mt-lg text-center'>Mostre esse código de acesso aos usuários participantes da sessão</h5>
+
+      <vue-qrcode :value='pin' />
+
+      <div class='column'
+           style='flex-flow: nowrap; border: 1px solid black; border-radius: 8px; padding: 0 8px; margin-bottom: 20px'>
+        <pre>PIN: {{ pin }}</pre>
+      </div>
+
+    </div>
+
     <div class='row justify-center'>
       <my-button @click='enableCamera' label='Camera' />
       <my-button @click='enableScreen' label='Screen' />
       <my-button @click='toggleAudio' label='Toggle audio' />
       <PictureInPicture />
-    </div>
-
-    <div class='column items-center'>
-      <h3>Você está transmitindo!</h3>
-      <p>Compartilhe o link abaixo para que outras pessoas possam assistir sua transmissão:</p>
-
-      <div class='column' style='flex-flow: nowrap; border: 1px solid black; border-radius: 8px; padding: 0 8px; margin-bottom: 20px'>
-        <pre v-html='viewerUrl'></pre>
-        <q-btn flat icon='content_copy' @click='copyViewerUrl'></q-btn>
-      </div>
-
-      <p>Ou compartilhe esse QR Code:</p>
-      <vue-qrcode :value='id' />
-
     </div>
 
 

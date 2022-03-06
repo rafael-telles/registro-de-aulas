@@ -8,10 +8,10 @@ const buttons: Button[] = [{
   label: 'Iniciar Gravação',
   goTo: 'StartOfflineRecording'
 }, {
-  label: 'Gravação Compartilhada',
-  goTo: 'SharedRecording'
-}, {
   label: 'Acessar Gravações',
   goTo: 'OpenRecording'
+}, {
+  label: 'Transmissão ao vivo',
+  goTo: 'SharedRecording'
 }];
 </script>

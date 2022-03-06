@@ -6,7 +6,7 @@ const router = useRouter()
 
 async function onDecode(decodedString: string) {
   await goTo(router, 'ViewerView', {
-    id: decodedString
+    pin: decodedString
   })
 }
 

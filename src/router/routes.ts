@@ -15,6 +15,7 @@ const PATH_PATHS = [
   'SharedRecording',
   'StreamView',
   'ViewerView',
+  'JoinStreamView',
   'QrCodeReaderView',
   'Help'
 ] as const;
