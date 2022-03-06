@@ -24,6 +24,10 @@ const pin = ref(generatePin());
 const currentVideoTrack = ref<MediaStreamTrack | null>(null);
 const videoRef = ref<HTMLVideoElement>();
 
+const isCameraEnabled = ref(false);
+const isScreenShareEnabled = ref(false);
+const isAudioEnabled = ref(false);
+
 async function start() {
   const remoteVideo = videoRef.value;
   if (!remoteVideo) {
@@ -51,6 +55,8 @@ function toggleAudio() {
   const stream = videoRef.value?.srcObject as MediaStream;
   const audioTrack = stream.getAudioTracks()[0];
   audioTrack.enabled = !audioTrack.enabled;
+
+  isAudioEnabled.value = audioTrack.enabled;
 }
 
 function disableCurrentVideo() {
@@ -58,6 +64,9 @@ function disableCurrentVideo() {
     currentVideoTrack.value.stop();
     currentVideoTrack.value = null;
   }
+
+  isCameraEnabled.value = false;
+  isScreenShareEnabled.value = false;
 }
 
 async function enableCamera() {
@@ -73,9 +82,20 @@ async function enableCamera() {
   stream.replaceAudioTrack(stream.getAudioTracks()[0]);
 
   currentVideoTrack.value = videoTrack;
+
+  isCameraEnabled.value = true;
+  isAudioEnabled.value = true;
 }
 
-async function enableScreen() {
+async function toggleCamera() {
+  if (isCameraEnabled.value) {
+    disableCurrentVideo();
+  } else {
+    await enableCamera();
+  }
+}
+
+async function enableScreenShare() {
   const stream = await navigator.mediaDevices.getDisplayMedia({ video: true });
 
   disableCurrentVideo();
@@ -84,11 +104,33 @@ async function enableScreen() {
   stream.replaceVideoTrack(videoTrack);
 
   currentVideoTrack.value = videoTrack;
+
+  isScreenShareEnabled.value = true;
+}
+
+async function toggleScreenShare() {
+  if (isScreenShareEnabled.value) {
+    disableCurrentVideo();
+  } else {
+    await enableScreenShare();
+  }
 }
 
 onMounted(async () => {
   await start();
   await enableCamera();
+});
+
+const cameraIcon = computed(() => {
+  return isCameraEnabled.value ? 'video_camera_front' : 'videocam_off';
+});
+
+const screenShareIcon = computed(() => {
+  return isScreenShareEnabled.value ? 'screen_share' : 'stop_screen_share';
+});
+
+const audioIcon = computed(() => {
+  return isAudioEnabled.value ? 'mic' : 'mic_off';
 });
 
 </script>
@@ -110,10 +152,31 @@ onMounted(async () => {
     </div>
 
     <div class='row justify-center'>
-      <my-button @click='enableCamera' label='Camera' />
-      <my-button @click='enableScreen' label='Screen' />
-      <my-button @click='toggleAudio' label='Toggle audio' />
-      <PictureInPicture />
+      <my-button @click='toggleCamera' :icon='cameraIcon'>
+        <q-tooltip v-if='isCameraEnabled'>
+          Sua câmera está sendo transmitida, clique para desativar.
+        </q-tooltip>
+        <q-tooltip v-else>
+          Clique para ativar sua câmera.
+        </q-tooltip>
+      </my-button>
+      <my-button class='q-ml-xs' @click='toggleScreenShare' :icon='screenShareIcon'>
+        <q-tooltip v-if='isScreenShareEnabled'>
+          Sua tela está sendo transmitida, clique para desativar.
+        </q-tooltip>
+        <q-tooltip v-else>
+          Clique para ativar sua tela.
+        </q-tooltip>
+      </my-button>
+      <my-button class='q-ml-xs' @click='toggleAudio' :icon='audioIcon'>
+        <q-tooltip v-if='isAudioEnabled'>
+          Sua áudio está sendo transmitido, clique para desativar.
+        </q-tooltip>
+        <q-tooltip v-else>
+          Clique para ativar sua áudio.
+        </q-tooltip>
+      </my-button>
+      <PictureInPicture class='q-ml-xs' />
     </div>
 
 

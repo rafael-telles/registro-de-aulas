@@ -19,6 +19,8 @@ async function enablePIP() {
 </script>
 
 <template>
-  <video ref='videoRef' autoplay playsinline controls muted width='0' height='0'></video>
-  <my-button @click='enablePIP' label='PIP' />
+  <div>
+    <my-button @click='enablePIP' label='PIP' />
+    <video ref='videoRef' autoplay playsinline controls muted width='0' height='0'></video>
+  </div>
 </template>

@@ -2,10 +2,26 @@
   <q-layout view="lHh Lpr lFf">
     <q-header elevated>
       <q-toolbar class="row">
-        <my-button class="col" flat dense round icon="home" aria-label="Início" @click="goToHome" />
-        <my-button class="col" flat dense round icon="settings" aria-label="Configurações" @click="goToSettings" />
-        <my-button class="col" flat dense round icon="help" aria-label="Ajuda" @click="goToHelp" />
-        <my-button class="col" disabled flat dense round icon="waving_hand" aria-label="Libras" />
+        <my-button class="col" flat dense round icon="home" aria-label="Início" @click="goToHome">
+          <q-tooltip>
+            Início
+          </q-tooltip>
+        </my-button>
+        <my-button class="col" flat dense round icon="settings" aria-label="Configurações" @click="goToSettings">
+          <q-tooltip>
+            Configurações
+          </q-tooltip>
+        </my-button>
+        <my-button class="col" flat dense round icon="help" aria-label="Ajuda" @click="goToHelp">
+          <q-tooltip>
+            Ajuda
+          </q-tooltip>
+        </my-button>
+        <my-button class="col" disabled flat dense round icon="waving_hand" aria-label="Libras">
+          <q-tooltip>
+            Libras
+          </q-tooltip>
+        </my-button>
       </q-toolbar>
     </q-header>
 

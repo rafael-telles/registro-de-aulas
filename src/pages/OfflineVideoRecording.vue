@@ -1,6 +1,6 @@
 <template>
   <div class='column items-center justify-evenly items-stretch'>
-    <video style='max-height: 30vh; background: var(--q-color2)' class='row' ref="videoRef" autoplay playsinline controls></video>
+    <video class='row' ref="videoRef" autoplay playsinline controls></video>
 
     <RecordingControl class='row' :streamProvider='streamProvider' />
   </div>
@@ -18,3 +18,10 @@ onMounted(async () => {
 
 const streamProvider = () => videoRef.value!.srcObject as MediaStream;
 </script>
+<style lang='scss' scoped>
+video {
+  max-height: 30vh;
+  max-width: 100%;
+  background: var(--q-color2);
+}
+</style>

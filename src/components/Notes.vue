@@ -36,6 +36,7 @@ function addNewNote() {
 function saveNote() {
   currentNote.value = undefined;
 }
+
 function deleteNote() {
   if (!currentNote.value) return;
 
