@@ -39,7 +39,7 @@ async function startRecord() {
 }
 
 async function stopRecord() {
-  const mediaBlob = await recording.finish('video/webm');
+  const mediaBlob = await recording.finish();
 
   const classRecord: ClassRecord = {
     blob: mediaBlob,

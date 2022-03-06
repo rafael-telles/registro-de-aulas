@@ -25,7 +25,7 @@ export class MediaRecording {
     this.status = 'recording';
   }
 
-  async finish(type = 'audio/mp4'): Promise<Blob> {
+  async finish(): Promise<Blob> {
     if (this.status === 'stopped') {
       throw new Error('Not recording');
     }
@@ -36,7 +36,7 @@ export class MediaRecording {
         resolve(void 0);
       };
     });
-    const blob = new Blob(this.chunks, { type });
+    const blob = new Blob(this.chunks, { type: this.recorder.mimeType });
     this.chunks = [];
     this.status = 'stopped';
     this.endTime = Date.now();
