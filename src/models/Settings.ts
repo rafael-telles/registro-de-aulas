@@ -10,7 +10,7 @@ type Settings = {
   firstAccess: boolean;
 };
 
-const DEFAULT_SETTINGS: Settings = {
+export const DEFAULT_SETTINGS: Settings = {
   color1: '#ffffff',
   color2: '#00a352',
   fontFamily: 'Roboto',

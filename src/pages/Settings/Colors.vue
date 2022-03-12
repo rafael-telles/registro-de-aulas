@@ -1,6 +1,7 @@
 <script setup lang='ts'>
 import { ref, watch } from 'vue';
-import { SETTINGS } from 'src/models/Settings';
+import { DEFAULT_SETTINGS, SETTINGS } from 'src/models/Settings';
+import MyButton from 'src/components/MyButton.vue';
 
 const colorOptions = [
   '#9900FF',
@@ -30,6 +31,11 @@ watch(color1, (newValue) => {
 watch(color2, (newValue) => {
   SETTINGS.color2 = newValue;
 });
+
+function reset() {
+  SETTINGS.color1 = DEFAULT_SETTINGS.color1;
+  SETTINGS.color2 = DEFAULT_SETTINGS.color2;
+}
 </script>
 
 <template>
@@ -43,6 +49,8 @@ watch(color2, (newValue) => {
       <p>Cor de fundo:</p>
       <q-color v-model='color1' no-header no-footer default-view='palette' />
     </div>
+
+    <my-button icon='restart_alt' label='Padrão' @click='reset'/>
   </q-page>
 </template>
 
