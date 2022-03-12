@@ -42,6 +42,6 @@ async function goToSettings() {
   await goTo(router, 'Settings');
 }
 async function goToHelp() {
-  await goTo(router, 'Help');
+  await goTo(router, 'Welcome');
 }
 </script>

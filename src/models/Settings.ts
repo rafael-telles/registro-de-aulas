@@ -7,15 +7,17 @@ type Settings = {
   fontFamily: string;
   invertColors: boolean;
   relativeFontSize: number;
+  firstAccess: boolean;
 };
 
 const DEFAULT_SETTINGS: Settings = {
   color1: '#ffffff',
-  color2: '#000000',
+  color2: '#00a352',
   fontFamily: 'Roboto',
   fontWeight: 'normal',
   invertColors: false,
   relativeFontSize: 1,
+  firstAccess: true,
 };
 
 function loadFromLocalStorage(): Settings {
