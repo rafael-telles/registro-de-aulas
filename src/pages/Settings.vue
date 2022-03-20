@@ -5,11 +5,11 @@
 import ButtonsOnlyPage, { Button } from 'pages/ButtonsOnlyPage.vue';
 
 const buttons: Button[] = [{
-  label: 'Cores',
+  label: 'Cores de texto e fundo',
   goTo: 'Settings/Colors'
 }, {
-  label: 'Inverter cores',
-  goTo: 'Settings/InvertColors'
+  label: 'Filtros de cor',
+  goTo: 'Settings/ColorFilter'
 }, {
   label: 'Tamanho das letras',
   goTo: 'Settings/FontSize'

@@ -2,7 +2,7 @@
 import { ref, watch } from 'vue';
 import { SETTINGS } from 'src/models/Settings';
 
-let fontWeight = ref(SETTINGS.fontWeight);
+const fontWeight = ref(SETTINGS.fontWeight);
 
 watch(fontWeight, (newValue) => {
   SETTINGS.fontWeight = newValue;

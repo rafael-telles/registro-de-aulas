@@ -13,14 +13,14 @@ const options = [
   { val: 'system-ui', label: 'System UI' },
 ];
 
-let fontFamily = ref(SETTINGS.fontFamily);
+const fontFamily = ref(SETTINGS.fontFamily);
 
 watch(fontFamily, (newValue) => {
   SETTINGS.fontFamily = newValue;
 });
 
 function reset() {
-  SETTINGS.fontFamily = DEFAULT_SETTINGS.fontFamily;
+  fontFamily.value = DEFAULT_SETTINGS.fontFamily;
 }
 </script>
 

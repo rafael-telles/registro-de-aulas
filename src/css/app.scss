@@ -6,9 +6,37 @@
 
 html {
   background-color: white;
-}
-html.invert-colors {
-  filter: invert(100%);
+
+  &.filter__invert {
+    filter: invert(100%);
+  }
+  &.filter__grayscale {
+    filter: grayscale(100%);
+  }
+  &.filter__protanopia {
+    filter: url(#protanopiaColourMatrix);
+  }
+  &.filter__protanomaly {
+    filter: url(#protanomalyColourMatrix);
+  }
+  &.filter__deuteranopia {
+    filter: url(#deuteranopiaColourMatrix);
+  }
+  &.filter__deutranomaly {
+    filter: url(#deutranomalyColourMatrix);
+  }
+  &.filter__tritanopia {
+    filter: url(#tritanopiaColourMatrix);
+  }
+  &.filter__tritanomaly {
+    filter: url(#tritanomalyColourMatrix);
+  }
+  &.filter__achromatopsia {
+    filter: url(#achromatopsiaColourMatrix);
+  }
+  &.filter__achromatomaly {
+    filter: url(#achromatomalyColourMatrix);
+  }
 }
 
 body {

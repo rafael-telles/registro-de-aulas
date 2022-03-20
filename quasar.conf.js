@@ -141,9 +141,9 @@ module.exports = configure(function (ctx) {
       },
 
       manifest: {
-        name: `Registro de Aulas`,
-        short_name: `Registro de Aulas`,
-        description: `A Quasar Framework app`,
+        name: 'Registro de Aulas',
+        short_name: 'Registro de Aulas',
+        description: 'A Quasar Framework app',
         display: 'standalone',
         orientation: 'portrait',
         background_color: '#ffffff',

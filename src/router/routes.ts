@@ -6,8 +6,8 @@ import Index from 'src/pages/Index.vue';
 import Welcome from 'src/pages/Welcome.vue';
 import Settings from 'src/pages/Settings.vue';
 import SettingsColors from 'src/pages/Settings/Colors.vue';
+import SettingsColorFilter from 'src/pages/Settings/ColorFilter.vue';
 import SettingsFontSize from 'src/pages/Settings/FontSize.vue';
-import SettingsInvertColors from 'src/pages/Settings/InvertColors.vue';
 import SettingsFontWeight from 'src/pages/Settings/FontWeight.vue';
 import SettingsFontStyle from 'src/pages/Settings/FontStyle.vue';
 import StartOfflineRecording from 'src/pages/StartOfflineRecording.vue';
@@ -26,8 +26,8 @@ const PATH_PATHS = {
   'Welcome': Welcome,
   'Settings': Settings,
   'Settings/Colors': SettingsColors,
+  'Settings/ColorFilter': SettingsColorFilter,
   'Settings/FontSize': SettingsFontSize,
-  'Settings/InvertColors': SettingsInvertColors,
   'Settings/FontWeight': SettingsFontWeight,
   'Settings/FontStyle': SettingsFontStyle,
   'StartOfflineRecording': StartOfflineRecording,

@@ -21,8 +21,8 @@ const colorOptions = [
   '#FF9900'
 ];
 
-let color1 = ref(SETTINGS.color1);
-let color2 = ref(SETTINGS.color2);
+const color1 = ref(SETTINGS.color1);
+const color2 = ref(SETTINGS.color2);
 
 watch(color1, (newValue) => {
   SETTINGS.color1 = newValue;
@@ -33,8 +33,8 @@ watch(color2, (newValue) => {
 });
 
 function reset() {
-  SETTINGS.color1 = DEFAULT_SETTINGS.color1;
-  SETTINGS.color2 = DEFAULT_SETTINGS.color2;
+  color1.value = DEFAULT_SETTINGS.color1;
+  color2.value = DEFAULT_SETTINGS.color2;
 }
 </script>
 

@@ -1,11 +1,24 @@
 import { setCssVar } from 'quasar';
 
+export const COLOR_FILTERS = [
+  'grayscale',
+  'invert',
+  'protanopia',
+  'protanomaly',
+  'deuteranopia',
+  'deutranomaly',
+  'tritanopia',
+  'tritanomaly',
+  'achromatopsia',
+  'achromatomaly'
+] as const;
+
 type Settings = {
   color1: string;
   color2: string;
   fontWeight: 'normal' | 'bold' | 'bolder' | 'lighter';
   fontFamily: string;
-  invertColors: boolean;
+  colorFilter: typeof COLOR_FILTERS[number] | null;
   relativeFontSize: number;
   firstAccess: boolean;
 };
@@ -15,9 +28,9 @@ export const DEFAULT_SETTINGS: Settings = {
   color2: '#00a352',
   fontFamily: 'Roboto',
   fontWeight: 'normal',
-  invertColors: false,
+  colorFilter: null,
   relativeFontSize: 1,
-  firstAccess: true,
+  firstAccess: true
 };
 
 function loadFromLocalStorage(): Settings {
@@ -25,7 +38,7 @@ function loadFromLocalStorage(): Settings {
   if (settings) {
     return {
       ...DEFAULT_SETTINGS,
-      ...(JSON.parse(settings) as Settings),
+      ...(JSON.parse(settings) as Settings)
     };
   }
   return DEFAULT_SETTINGS;
@@ -42,7 +55,10 @@ function applySettings(settings: Settings) {
   setCssVar('font-weight', settings.fontWeight);
   setCssVar('font-family', settings.fontFamily);
 
-  document.documentElement.classList.toggle('invert-colors', settings.invertColors);
+  // Apply Color Filter
+  for (const filter of COLOR_FILTERS) {
+    document.documentElement.classList.toggle(`filter__${filter}`, settings.colorFilter === filter);
+  }
 
   const relativeFontSizePercentageString = `${settings.relativeFontSize * 100}%`;
   setCssVar('relative-font-size', relativeFontSizePercentageString);
@@ -54,7 +70,7 @@ export const SETTINGS: Settings = new Proxy(rawSettings, {
     target[key] = value;
     applySettings(target);
     return true;
-  },
+  }
 });
 
 setTimeout(() => {
