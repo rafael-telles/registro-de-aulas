@@ -7,6 +7,7 @@
             Início
           </q-tooltip>
         </my-button>
+        <ZoomControl />
         <my-button class="col" flat dense round icon="settings" aria-label="Configurações" @click="goToSettings">
           <q-tooltip>
             Configurações
@@ -32,6 +33,7 @@
 import { useRouter } from 'vue-router';
 import { goTo } from 'src/helpers/goTo';
 import MyButton from 'components/MyButton.vue';
+import ZoomControl from 'components/ZoomControl.vue';
 
 const router = useRouter();
 
